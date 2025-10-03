@@ -32,12 +32,14 @@ Your code is already on GitHub and ready to deploy! Follow these steps:
 1. **Create Account**: https://render.com (Sign up with GitHub)
 
 2. **New Web Service**:
+
    - Click "New +" → "Web Service"
    - Connect your GitHub account
    - Select repository: `Gk091202/ContentIQ`
    - Click "Connect"
 
 3. **Configure Service**:
+
    ```
    Name: contentiq-backend
    Region: Oregon (or closest to you)
@@ -50,6 +52,7 @@ Your code is already on GitHub and ready to deploy! Follow these steps:
    ```
 
 4. **Environment Variables** (Click "Advanced"):
+
    ```
    MONGO_URI=mongodb+srv://contentiq_user:YOUR_PASSWORD@cluster0.xxxxx.mongodb.net/contentiq
    JWT_SECRET=contentiq_super_secret_jwt_key_must_be_at_least_32_characters_long
@@ -59,7 +62,8 @@ Your code is already on GitHub and ready to deploy! Follow these steps:
 
 5. **Create Web Service** → Wait 5-10 minutes for deployment
 
-6. **Copy Backend URL**: 
+6. **Copy Backend URL**:
+
    - Example: `https://contentiq-backend.onrender.com`
    - Save this for frontend deployment!
 
@@ -79,11 +83,13 @@ Your code is already on GitHub and ready to deploy! Follow these steps:
 1. **Create Account**: https://vercel.com (Sign up with GitHub)
 
 2. **Import Project**:
+
    - Click "Add New..." → "Project"
    - Import Git Repository
    - Select: `Gk091202/ContentIQ`
 
 3. **Configure Project**:
+
    ```
    Project Name: contentiq
    Framework Preset: Vite
@@ -93,15 +99,17 @@ Your code is already on GitHub and ready to deploy! Follow these steps:
    ```
 
 4. **Environment Variables**:
+
    ```
    Key: VITE_API_URL
    Value: https://contentiq-backend.onrender.com
    ```
+
    (Use YOUR backend URL from step 2)
 
 5. **Deploy** → Wait 2-3 minutes
 
-6. **Get Live URL**: 
+6. **Get Live URL**:
    - Example: `https://contentiq.vercel.app`
    - Click to test your live application!
 
@@ -138,19 +146,21 @@ vercel --prod
 After deploying frontend, update backend CORS:
 
 1. **Edit** `backend/server.js`:
+
    ```javascript
    const corsOptions = {
      origin: [
-       'http://localhost:3000',
-       'https://contentiq.vercel.app'  // Add your Vercel URL
+       "http://localhost:3000",
+       "https://contentiq.vercel.app", // Add your Vercel URL
      ],
-     credentials: true
+     credentials: true,
    };
-   
+
    app.use(cors(corsOptions));
    ```
 
 2. **Commit and Push**:
+
    ```bash
    cd /Users/gauravkoli/ContentIQ
    git add backend/server.js
@@ -175,11 +185,13 @@ After deploying frontend, update backend CORS:
 ## 🎉 Your Application is Live!
 
 ### Live URLs:
+
 - **Frontend**: https://contentiq.vercel.app
 - **Backend**: https://contentiq-backend.onrender.com
 - **Database**: MongoDB Atlas (managed)
 
 ### Free Tier Limits:
+
 - **MongoDB Atlas**: 512 MB storage
 - **Render**: 750 hours/month (plenty for one app)
 - **Vercel**: 100 GB bandwidth/month
@@ -192,17 +204,20 @@ After deploying frontend, update backend CORS:
 ### Backend Alternatives:
 
 **Railway** (Recommended #2)
+
 - Website: https://railway.app
 - Pros: Even easier than Render, $5 free credit
 - Setup: Connect GitHub → Deploy
 - Cons: After free credit, paid only
 
 **Heroku**
+
 - Website: https://heroku.com
 - Pros: Industry standard, easy CLI
 - Cons: No free tier anymore ($7/month minimum)
 
 **AWS EC2 Free Tier**
+
 - Website: https://aws.amazon.com
 - Pros: 750 hours/month free for 12 months
 - Cons: More complex setup, requires AWS knowledge
@@ -210,12 +225,14 @@ After deploying frontend, update backend CORS:
 ### Frontend Alternatives:
 
 **Netlify**
+
 - Website: https://netlify.com
 - Pros: Great free tier, similar to Vercel
 - Setup: Import from GitHub → Deploy
 - Cons: Slightly slower build times
 
 **GitHub Pages**
+
 - Website: https://pages.github.com
 - Pros: Free, integrated with GitHub
 - Cons: Static only (need backend elsewhere)
@@ -225,16 +242,19 @@ After deploying frontend, update backend CORS:
 ## 📊 Monitoring Your Application
 
 ### Render Dashboard:
+
 - View logs
 - Check metrics
 - Monitor uptime
 
 ### Vercel Dashboard:
+
 - View deployments
 - Check analytics
 - Monitor performance
 
 ### MongoDB Atlas:
+
 - View database metrics
 - Monitor connections
 - Check storage usage
@@ -244,24 +264,28 @@ After deploying frontend, update backend CORS:
 ## 🐛 Troubleshooting
 
 ### Backend won't start:
+
 1. Check Render logs for errors
 2. Verify all environment variables are set
 3. Check MongoDB connection string
 4. Ensure OpenAI API key is valid
 
 ### Frontend can't connect to backend:
+
 1. Check VITE_API_URL is correct
 2. Verify backend is running (visit backend URL)
 3. Check backend CORS settings
 4. Open browser console for errors
 
 ### Database connection failed:
+
 1. Check MongoDB Atlas IP whitelist (should be 0.0.0.0/0)
 2. Verify connection string format
 3. Check database user permissions
 4. Test connection from local first
 
 ### OpenAI API errors:
+
 1. Verify API key is correct
 2. Check you have credits in OpenAI account
 3. Monitor usage at platform.openai.com
@@ -284,14 +308,17 @@ After deploying frontend, update backend CORS:
 ### When to Upgrade:
 
 **MongoDB Atlas**:
+
 - Upgrade when: >512 MB data
 - Cost: $9/month for 2GB
 
 **Render**:
+
 - Upgrade when: Need faster performance
 - Cost: $7/month for 0.5 CPU
 
 **Vercel**:
+
 - Usually stays free unless: >100GB bandwidth
 - Cost: $20/month for Pro
 
@@ -313,6 +340,7 @@ After deploying frontend, update backend CORS:
 ## 📱 Mobile App (Future Enhancement)
 
 Your API is ready for mobile apps:
+
 - React Native app can use same backend
 - Expo for easier development
 - API endpoints are mobile-friendly
