@@ -5,6 +5,7 @@ Complete step-by-step guide to deploy your AI-Powered Content Generator on Digit
 ---
 
 ## 📋 Table of Contents
+
 1. [Prerequisites](#prerequisites)
 2. [Architecture Overview](#architecture-overview)
 3. [Option 1: Deploy on App Platform (Easiest)](#option-1-app-platform-easiest)
@@ -19,6 +20,7 @@ Complete step-by-step guide to deploy your AI-Powered Content Generator on Digit
 ## 🎯 Prerequisites
 
 Before starting, ensure you have:
+
 - ✅ DigitalOcean account ([Sign up here](https://www.digitalocean.com/))
 - ✅ GitHub repository with your code (✓ Already done: `Gk091202/ContentIQ`)
 - ✅ OpenAI API key
@@ -30,11 +32,13 @@ Before starting, ensure you have:
 ## 🏗️ Architecture Overview
 
 Your app has 3 components:
+
 1. **Frontend** (React + Vite) - Serves the UI
 2. **Backend** (Node.js + Express) - API server
 3. **Database** (MongoDB) - Data storage
 
 **Deployment Strategy:**
+
 - Frontend: DigitalOcean App Platform (Static Site)
 - Backend: DigitalOcean App Platform (Node.js Service)
 - Database: MongoDB Atlas (Free tier) or DigitalOcean Managed MongoDB
@@ -52,18 +56,21 @@ DigitalOcean's App Platform is a PaaS (Platform as a Service) that handles infra
 1. Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 2. Sign up / Log in
 3. Create a **Free Cluster**:
+
    - Click "Build a Database"
    - Select "M0 Sandbox" (Free tier)
    - Choose region closest to your DigitalOcean region
    - Click "Create Cluster"
 
 4. **Configure Network Access**:
+
    - Go to "Network Access"
    - Click "Add IP Address"
    - Click "Allow Access from Anywhere" (0.0.0.0/0)
    - Click "Confirm"
 
 5. **Create Database User**:
+
    - Go to "Database Access"
    - Click "Add New Database User"
    - Choose "Password" authentication
@@ -94,9 +101,11 @@ DigitalOcean's App Platform is a PaaS (Platform as a Service) that handles infra
 ### Step 2: Deploy Backend to App Platform
 
 1. **Login to DigitalOcean**:
+
    - Go to [DigitalOcean Dashboard](https://cloud.digitalocean.com/)
 
 2. **Create New App**:
+
    - Click "Apps" in left sidebar
    - Click "Create App"
    - Choose "GitHub" as source
@@ -106,6 +115,7 @@ DigitalOcean's App Platform is a PaaS (Platform as a Service) that handles infra
    - Click "Next"
 
 3. **Configure Backend Service**:
+
    - DigitalOcean will auto-detect your app
    - Click "Edit" on the detected Node.js component
    - Configure as follows:
@@ -122,6 +132,7 @@ DigitalOcean's App Platform is a PaaS (Platform as a Service) that handles infra
      ```
 
 4. **Set Environment Variables** (Click "Environment Variables"):
+
    ```
    MONGO_URI=mongodb+srv://username:password@cluster0.xxxxx.mongodb.net/contentiq
    JWT_SECRET=your_super_secret_jwt_key_change_this_in_production
@@ -137,6 +148,7 @@ DigitalOcean's App Platform is a PaaS (Platform as a Service) that handles infra
 ### Step 3: Deploy Frontend to App Platform
 
 1. **Add Frontend Component**:
+
    - In the same app, click "Add Component"
    - Choose "Static Site"
    - Select your GitHub repository
@@ -150,6 +162,7 @@ DigitalOcean's App Platform is a PaaS (Platform as a Service) that handles infra
      ```
 
 2. **Set Frontend Environment Variables**:
+
    - Click "Environment Variables"
    - Add build-time environment variable:
      ```
@@ -164,6 +177,7 @@ DigitalOcean's App Platform is a PaaS (Platform as a Service) that handles infra
 ### Step 4: Review and Launch
 
 1. **Review Configuration**:
+
    - App Name: `contentiq` (or your preferred name)
    - Region: Choose closest to your users
    - Review pricing (should be ~$5-12/month)
@@ -171,6 +185,7 @@ DigitalOcean's App Platform is a PaaS (Platform as a Service) that handles infra
 2. **Click "Create Resources"**
 
 3. **Wait for Deployment** (5-10 minutes):
+
    - Watch the build logs
    - Both frontend and backend will deploy automatically
 
@@ -183,6 +198,7 @@ DigitalOcean's App Platform is a PaaS (Platform as a Service) that handles infra
 ### Step 5: Update Frontend Environment Variable
 
 1. **Copy Backend URL**:
+
    - Go to your app dashboard
    - Copy the backend service URL
 
@@ -205,7 +221,7 @@ You need to allow your frontend domain in backend CORS settings.
 const corsOptions = {
   origin: [
     "http://localhost:3000",
-    "https://contentiq-xxxxx.ondigitalocean.app" // Add your frontend URL
+    "https://contentiq-xxxxx.ondigitalocean.app", // Add your frontend URL
   ],
   credentials: true,
 };
@@ -214,6 +230,7 @@ app.use(cors(corsOptions));
 ```
 
 **Push changes:**
+
 ```bash
 git add backend/server.js
 git commit -m "Update CORS for production frontend"
@@ -232,6 +249,7 @@ For those who prefer traditional VPS hosting with more control.
 
 1. **Login to DigitalOcean**
 2. **Create Droplet**:
+
    - Click "Create" → "Droplets"
    - Choose Ubuntu 22.04 LTS
    - Choose plan: Basic ($6/month - 1GB RAM)
@@ -247,16 +265,19 @@ For those who prefer traditional VPS hosting with more control.
 ### Step 2: Initial Server Setup
 
 1. **SSH into your Droplet**:
+
    ```bash
    ssh root@your_droplet_ip
    ```
 
 2. **Update system**:
+
    ```bash
    apt update && apt upgrade -y
    ```
 
 3. **Install Node.js**:
+
    ```bash
    curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
    apt install -y nodejs
@@ -265,11 +286,13 @@ For those who prefer traditional VPS hosting with more control.
    ```
 
 4. **Install PM2** (Process Manager):
+
    ```bash
    npm install -g pm2
    ```
 
 5. **Install Nginx** (Web Server):
+
    ```bash
    apt install -y nginx
    systemctl start nginx
@@ -277,6 +300,7 @@ For those who prefer traditional VPS hosting with more control.
    ```
 
 6. **Install Git**:
+
    ```bash
    apt install -y git
    ```
@@ -293,6 +317,7 @@ For those who prefer traditional VPS hosting with more control.
 ### Step 3: Deploy Backend
 
 1. **Clone Repository**:
+
    ```bash
    cd /var/www
    git clone https://github.com/Gk091202/ContentIQ.git
@@ -300,15 +325,19 @@ For those who prefer traditional VPS hosting with more control.
    ```
 
 2. **Install Dependencies**:
+
    ```bash
    npm install
    ```
 
 3. **Create Environment File**:
+
    ```bash
    nano .env
    ```
+
    Add:
+
    ```env
    MONGO_URI=mongodb+srv://username:password@cluster0.xxxxx.mongodb.net/contentiq
    JWT_SECRET=your_super_secret_jwt_key_change_this
@@ -316,9 +345,11 @@ For those who prefer traditional VPS hosting with more control.
    PORT=5001
    NODE_ENV=production
    ```
+
    Save: `Ctrl+X`, then `Y`, then `Enter`
 
 4. **Start Backend with PM2**:
+
    ```bash
    pm2 start server.js --name contentiq-backend
    pm2 save
@@ -336,29 +367,32 @@ For those who prefer traditional VPS hosting with more control.
 ### Step 4: Deploy Frontend
 
 1. **Build Frontend Locally** (on your Mac):
+
    ```bash
    cd /Users/gauravkoli/ContentIQ/frontend
-   
+
    # Update .env with production backend URL
    echo "VITE_API_URL=http://your_droplet_ip:5001" > .env
-   
+
    # Build
    npm run build
    ```
 
 2. **Upload Build to Droplet**:
+
    ```bash
    scp -r dist root@your_droplet_ip:/var/www/ContentIQ/frontend/
    ```
 
    OR build on server:
+
    ```bash
    # SSH into droplet
    cd /var/www/ContentIQ/frontend
-   
+
    # Create .env
    echo "VITE_API_URL=http://your_droplet_ip:5001" > .env
-   
+
    # Build
    npm install
    npm run build
@@ -369,11 +403,13 @@ For those who prefer traditional VPS hosting with more control.
 ### Step 5: Configure Nginx
 
 1. **Create Nginx Configuration**:
+
    ```bash
    nano /etc/nginx/sites-available/contentiq
    ```
 
 2. **Add Configuration**:
+
    ```nginx
    server {
        listen 80;
@@ -401,6 +437,7 @@ For those who prefer traditional VPS hosting with more control.
    ```
 
 3. **Enable Site**:
+
    ```bash
    ln -s /etc/nginx/sites-available/contentiq /etc/nginx/sites-enabled/
    nginx -t  # Test configuration
@@ -415,11 +452,13 @@ For those who prefer traditional VPS hosting with more control.
 ### Step 6: Setup SSL with Let's Encrypt (Optional but Recommended)
 
 1. **Install Certbot**:
+
    ```bash
    apt install -y certbot python3-certbot-nginx
    ```
 
 2. **Get SSL Certificate** (requires a domain):
+
    ```bash
    certbot --nginx -d yourdomain.com -d www.yourdomain.com
    ```
@@ -436,6 +475,7 @@ For those who prefer traditional VPS hosting with more control.
 ### Connect Custom Domain
 
 1. **In DigitalOcean Dashboard**:
+
    - Go to "Networking" → "Domains"
    - Add your domain
    - Add DNS records:
@@ -443,6 +483,7 @@ For those who prefer traditional VPS hosting with more control.
      - `A` record: `www` → Your Droplet IP
 
 2. **In Your Domain Registrar** (GoDaddy, Namecheap, etc):
+
    - Update nameservers to:
      ```
      ns1.digitalocean.com
@@ -462,21 +503,24 @@ For those who prefer traditional VPS hosting with more control.
 ## 💰 Estimated Costs
 
 ### App Platform Option:
-| Component | Plan | Cost |
-|-----------|------|------|
-| Backend Service | Basic | $5/month |
-| Frontend Static Site | Starter | $0/month (free tier) |
-| MongoDB Atlas | Free Tier | $0/month |
-| **Total** | | **$5/month** |
+
+| Component            | Plan      | Cost                 |
+| -------------------- | --------- | -------------------- |
+| Backend Service      | Basic     | $5/month             |
+| Frontend Static Site | Starter   | $0/month (free tier) |
+| MongoDB Atlas        | Free Tier | $0/month             |
+| **Total**            |           | **$5/month**         |
 
 ### Droplet Option:
-| Component | Plan | Cost |
-|-----------|------|------|
-| Droplet | Basic (1GB RAM) | $6/month |
-| MongoDB Atlas | Free Tier | $0/month |
-| **Total** | | **$6/month** |
+
+| Component     | Plan            | Cost         |
+| ------------- | --------------- | ------------ |
+| Droplet       | Basic (1GB RAM) | $6/month     |
+| MongoDB Atlas | Free Tier       | $0/month     |
+| **Total**     |                 | **$6/month** |
 
 ### With Custom Domain:
+
 - Domain Name: $10-15/year (from registrar)
 
 ---
@@ -511,6 +555,7 @@ pm2 restart contentiq-backend
 ## 🐛 Troubleshooting
 
 ### Backend Won't Start
+
 ```bash
 # Check logs
 pm2 logs contentiq-backend
@@ -522,6 +567,7 @@ pm2 logs contentiq-backend
 ```
 
 ### Frontend Shows Errors
+
 ```bash
 # Check if VITE_API_URL is correct
 # Rebuild frontend:
@@ -530,15 +576,18 @@ npm run build
 ```
 
 ### CORS Issues
+
 - Ensure backend CORS allows your frontend domain
 - Check `backend/server.js` CORS configuration
 
 ### MongoDB Connection Failed
+
 - Check MongoDB Atlas IP whitelist (allow 0.0.0.0/0)
 - Verify connection string has correct password
 - Check if cluster is running
 
 ### SSL Certificate Issues
+
 ```bash
 # Check certificate status
 certbot certificates
@@ -587,6 +636,7 @@ certbot renew --force-renewal
 ## 🆘 Need Help?
 
 If you encounter issues:
+
 1. Check the troubleshooting section above
 2. Review DigitalOcean logs/console
 3. Check PM2 logs: `pm2 logs`
