@@ -47,13 +47,15 @@ NODE_ENV=production
 - Generate a secure `JWT_SECRET` (at least 32 characters)
 - Update `FRONTEND_URL` after deploying to Vercel (Step 8)
 
-### Step 3: Set Root Directory (if needed)
+### Step 3: Set Root Directory
 
-If Railway doesn't auto-detect the backend folder:
+**IMPORTANT:** Railway needs to know the backend code is in a subdirectory:
 
 1. Go to **Settings** → **Build**
 2. Set **Root Directory** to `backend`
-3. Set **Start Command** to `npm start`
+3. Click **Save**
+
+The `nixpacks.toml` file in the backend directory will handle Node.js installation automatically.
 
 ### Step 4: Deploy
 
